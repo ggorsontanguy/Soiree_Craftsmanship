@@ -1,0 +1,12 @@
+Business Requirements
+
+Imagine a social networking website for travellers
+
+You need to be logged in to see the content
+You need to be friend to see sommeone else's trip
+
+Legacy Code Rules
+
+You cannot change production code if not covered by tests
+
+Just automated refactoring (via IDEs) are allowed, if needed to write the test
