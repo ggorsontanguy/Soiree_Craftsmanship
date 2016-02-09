@@ -33,13 +33,7 @@ public class TripService {
 	}
 
 	public List<Trip> getTripsByUser(User user) throws UserNotLoggedInException {
-		// Extract & Override Call
-		return getTripsByUser(user, getLoggedUser());
-	}
-
-	User getLoggedUser() {
-		User loggedUser = UserSession.getInstance().getLoggedUser();
-		return loggedUser;
+		return getTripsByUser(user, UserSession.getInstance().getLoggedUser());
 	}
 
 }
