@@ -47,19 +47,23 @@ public class TripServiceTest {
 
 		User notFriendUser = new User();
 		List<Trip> tripsUser = tripservice.getTripsByUser(notFriendUser);
-		
+
 		assertThat(tripsUser).isEmpty();
 	}
-	
-	//@Test
-	public void should_return_trip_when_current_user_is_friend_with_logged_user() {
-		TripService tripservice = new TestableTripService(LOGGED_USER);
 
+	@Test
+	public void should_return_trips_when_current_user_is_friend_with_logged_user() {
+		TripService tripservice = new TestableTripService(LOGGED_USER);
+		Trip paris = new Trip();
+		Trip london = new Trip();
 		User friendUser = new User();
+		friendUser.addTrip(paris);
+		friendUser.addTrip(london);
+
 		friendUser.addFriend(LOGGED_USER);
 		List<Trip> tripsUser = tripservice.getTripsByUser(friendUser);
-		
-		assertThat(tripsUser).isNotEmpty();
+
+		assertThat(tripsUser).containsExactly(paris, london);
 	}
 
 }
