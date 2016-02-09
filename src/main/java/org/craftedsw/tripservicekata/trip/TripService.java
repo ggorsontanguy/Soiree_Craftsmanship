@@ -31,11 +31,10 @@ public class TripService {
 		// Feature Envy
 		boolean isFriend = user.isFriendWith(loggedUser);
 		
-		List<Trip> tripList = new ArrayList<Trip>();
 		if (isFriend) {
-			tripList = tripDAO.retrieveripsByUser(user);
+			return tripDAO.retrieveripsByUser(user);
 		}
-		return tripList;
+		return new ArrayList<Trip>();
 
 	}
 
