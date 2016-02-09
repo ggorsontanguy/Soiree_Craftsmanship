@@ -34,26 +34,6 @@ public class TripServiceTest {
 
 	}
 
-	public final class TestableTripService extends TripService {
-
-		TestableTripService(User loggedUser, TripDAO tripDAO) {
-			super(tripDAO);
-			this.loggedUser = loggedUser;
-		}
-
-		public TestableTripService(User loggedUser) {
-			super(new TripDAO());
-			this.loggedUser = loggedUser;
-		}
-
-		User loggedUser;
-
-		@Override
-		User getLoggedUser() {
-			return loggedUser;
-		}
-	}
-
 	@Test
 	public void should_return_no_trip_when_current_user_is_not_friend_with_logged_user() {
 		TripService tripservice = new TripService();
