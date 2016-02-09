@@ -2,12 +2,14 @@ package org.craftedsw.tripservicekata.trip;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.craftedsw.tripservicekata.exception.UserNotLoggedInException;
 import org.craftedsw.tripservicekata.trip.TripService;
 import org.craftedsw.tripservicekata.user.User;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class TripServiceTest {
 
@@ -28,8 +30,13 @@ public class TripServiceTest {
 
 	public final class TestableTripService extends TripService {
 
-		TestableTripService(User loggedUser) {
-			super();
+		TestableTripService(User loggedUser, TripDAO mockTripDAO) {
+			super(mockTripDAO);
+			this.loggedUser = loggedUser;
+		}
+
+		public TestableTripService(User loggedUser) {
+			super(new TripDAO());
 			this.loggedUser = loggedUser;
 		}
 
@@ -53,14 +60,19 @@ public class TripServiceTest {
 
 	@Test
 	public void should_return_trips_when_current_user_is_friend_with_logged_user() {
-		TripService tripservice = new TestableTripService(LOGGED_USER);
+
+		TripDAO mockTripDAO = Mockito.mock(TripDAO.class);
 		Trip paris = new Trip();
 		Trip london = new Trip();
 		User friendUser = new User();
+
+		Mockito.when(mockTripDAO.retrieveripsByUser(friendUser)).thenReturn(Arrays.asList(paris, london));
+		TripService tripservice = new TestableTripService(LOGGED_USER, mockTripDAO);
+
 		friendUser.addTrip(paris);
 		friendUser.addTrip(london);
-
 		friendUser.addFriend(LOGGED_USER);
+
 		List<Trip> tripsUser = tripservice.getTripsByUser(friendUser);
 
 		assertThat(tripsUser).containsExactly(paris, london);
