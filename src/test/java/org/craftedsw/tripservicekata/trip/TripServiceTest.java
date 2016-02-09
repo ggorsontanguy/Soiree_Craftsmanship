@@ -21,10 +21,15 @@ public class TripServiceTest {
 
 	@Test
 	public void should_raise_exception_when_no_user_logged() {
+		
+		//GIVEN
 		TripService tripservice = new TestableTripService(USER_NOT_LOGGED);
 
 		assertThatThrownBy(() -> {
+			// WHEN
 			tripservice.getTripsByUser(GUEST_USER);
+			
+			//THEN
 		}).isInstanceOf(UserNotLoggedInException.class);
 
 	}
@@ -62,21 +67,34 @@ public class TripServiceTest {
 	@Test
 	public void should_return_trips_when_current_user_is_friend_with_logged_user() {
 
-		TripDAO mockTripDAO = mock(TripDAO.class);
 		Trip paris = new Trip();
 		Trip london = new Trip();
-		User friendUser = new User();
-
-		when(mockTripDAO.retrieveripsByUser(friendUser)).thenReturn(Arrays.asList(paris, london));
+		List<Trip> expectedTrips = Arrays.asList(paris, london);
+		
+		User friendUser = buildFriendUser(expectedTrips);
+		
+		TripDAO mockTripDAO = makeFakeDao(expectedTrips, friendUser);
+		
 		TripService tripservice = new TestableTripService(LOGGED_USER, mockTripDAO);
-
-		friendUser.addTrip(paris);
-		friendUser.addTrip(london);
-		friendUser.addFriend(LOGGED_USER);
 
 		List<Trip> tripsUser = tripservice.getTripsByUser(friendUser);
 
-		assertThat(tripsUser).containsExactly(paris, london);
+		assertThat(tripsUser).containsExactlyElementsOf(expectedTrips);
+	}
+
+	private TripDAO makeFakeDao(List<Trip> expectedTrips, User friendUser) {
+		TripDAO mockTripDAO = mock(TripDAO.class);
+		when(mockTripDAO.retrieveripsByUser(friendUser)).thenReturn(expectedTrips);
+		return mockTripDAO;
+	}
+
+	private User buildFriendUser(List<Trip> expectedTrips) {
+		User friendUser = new User();
+		for (Trip trip : expectedTrips) {
+			friendUser.addTrip(trip);
+		}
+		friendUser.addFriend(LOGGED_USER);
+		return friendUser;
 	}
 
 }
