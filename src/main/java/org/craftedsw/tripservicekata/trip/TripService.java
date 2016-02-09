@@ -21,6 +21,7 @@ public class TripService {
 		this.tripDAO = tripDAO;
 	}
 
+	// Parametrized Method
 	public List<Trip> getTripsByUser(User user, User loggedUser) throws UserNotLoggedInException {
 		if (loggedUser == null) {
 			throw new UserNotLoggedInException();
