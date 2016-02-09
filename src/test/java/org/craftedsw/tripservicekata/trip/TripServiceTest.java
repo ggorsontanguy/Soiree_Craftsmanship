@@ -1,15 +1,16 @@
 package org.craftedsw.tripservicekata.trip;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.craftedsw.tripservicekata.exception.UserNotLoggedInException;
-import org.craftedsw.tripservicekata.trip.TripService;
 import org.craftedsw.tripservicekata.user.User;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class TripServiceTest {
 
@@ -61,12 +62,12 @@ public class TripServiceTest {
 	@Test
 	public void should_return_trips_when_current_user_is_friend_with_logged_user() {
 
-		TripDAO mockTripDAO = Mockito.mock(TripDAO.class);
+		TripDAO mockTripDAO = mock(TripDAO.class);
 		Trip paris = new Trip();
 		Trip london = new Trip();
 		User friendUser = new User();
 
-		Mockito.when(mockTripDAO.retrieveripsByUser(friendUser)).thenReturn(Arrays.asList(paris, london));
+		when(mockTripDAO.retrieveripsByUser(friendUser)).thenReturn(Arrays.asList(paris, london));
 		TripService tripservice = new TestableTripService(LOGGED_USER, mockTripDAO);
 
 		friendUser.addTrip(paris);
