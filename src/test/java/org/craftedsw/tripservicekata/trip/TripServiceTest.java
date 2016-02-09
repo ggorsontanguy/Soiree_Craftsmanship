@@ -31,8 +31,8 @@ public class TripServiceTest {
 
 	public final class TestableTripService extends TripService {
 
-		TestableTripService(User loggedUser, TripDAO mockTripDAO) {
-			super(mockTripDAO);
+		TestableTripService(User loggedUser, TripDAO tripDAO) {
+			super(tripDAO);
 			this.loggedUser = loggedUser;
 		}
 
