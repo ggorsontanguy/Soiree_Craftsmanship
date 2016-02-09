@@ -23,11 +23,11 @@ public class TripServiceTest {
 	public void should_raise_exception_when_no_user_logged() {
 		
 		//GIVEN
-		TripService tripservice = new TestableTripService(USER_NOT_LOGGED);
+		TripService tripservice = new TripService();
 
 		assertThatThrownBy(() -> {
 			// WHEN
-			tripservice.getTripsByUser(GUEST_USER);
+			tripservice.getTripsByUser(GUEST_USER,USER_NOT_LOGGED);
 			
 			//THEN
 		}).isInstanceOf(UserNotLoggedInException.class);
@@ -56,10 +56,10 @@ public class TripServiceTest {
 
 	@Test
 	public void should_return_no_trip_when_current_user_is_not_friend_with_logged_user() {
-		TripService tripservice = new TestableTripService(LOGGED_USER);
+		TripService tripservice = new TripService();
 
 		User notFriendUser = new User();
-		List<Trip> tripsUser = tripservice.getTripsByUser(notFriendUser);
+		List<Trip> tripsUser = tripservice.getTripsByUser(notFriendUser,LOGGED_USER);
 
 		assertThat(tripsUser).isEmpty();
 	}
@@ -75,9 +75,9 @@ public class TripServiceTest {
 		
 		TripDAO mockTripDAO = makeFakeDao(expectedTrips, friendUser);
 		
-		TripService tripservice = new TestableTripService(LOGGED_USER, mockTripDAO);
+		TripService tripservice = new TripService(mockTripDAO);
 
-		List<Trip> tripsUser = tripservice.getTripsByUser(friendUser);
+		List<Trip> tripsUser = tripservice.getTripsByUser(friendUser,LOGGED_USER);
 
 		assertThat(tripsUser).containsExactlyElementsOf(expectedTrips);
 	}

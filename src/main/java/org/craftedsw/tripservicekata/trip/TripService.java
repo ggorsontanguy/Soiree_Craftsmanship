@@ -13,7 +13,7 @@ public class TripService {
 	TripDAO tripDAO;
 
 	// Parametrized Constructor
-	TripService() {
+	public TripService() {
 		this(new TripDAO());
 	}
 
@@ -21,18 +21,19 @@ public class TripService {
 		this.tripDAO = tripDAO;
 	}
 
-	public List<Trip> getTripsByUser(User user) throws UserNotLoggedInException {
-
-		// Extract & Override Call
-		User loggedUser = getLoggedUser();
+	public List<Trip> getTripsByUser(User user, User loggedUser) throws UserNotLoggedInException {
 		if (loggedUser == null) {
 			throw new UserNotLoggedInException();
 		}
-
 		// Feature Envy
 		boolean isFriend = user.isFriendWith(loggedUser);
 
 		return isFriend ? tripDAO.retrieveripsByUser(user) : Collections.emptyList();
+	}
+
+	public List<Trip> getTripsByUser(User user) throws UserNotLoggedInException {
+		// Extract & Override Call
+		return getTripsByUser(user, getLoggedUser());
 	}
 
 	User getLoggedUser() {
