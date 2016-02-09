@@ -1,11 +1,11 @@
 package org.craftedsw.tripservicekata.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.craftedsw.tripservicekata.trip.Trip;
+import org.junit.Test;
 
 public class UserTest{
 
-	
+	@Test
+	public void should_do_something() {
+		
+	}
 }
