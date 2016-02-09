@@ -20,10 +20,6 @@ public class TripService {
 		this.tripDAO = tripDAO;
 	}
 	
-	
-	
-
-
 	public List<Trip> getTripsByUser(User user) throws UserNotLoggedInException {
 		
 		// Extract & Override Call
@@ -32,13 +28,8 @@ public class TripService {
 			throw new UserNotLoggedInException();
 		}
 		
-		boolean isFriend = false;
-		for (User friend : user.getFriends()) {
-			if (friend.equals(loggedUser)) {
-				isFriend = true;
-				break;
-			}
-		}
+		// Feature Envy
+		boolean isFriend = user.isFriendWith(loggedUser);
 		
 		List<Trip> tripList = new ArrayList<Trip>();
 		if (isFriend) {
